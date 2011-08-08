@@ -1,0 +1,34 @@
+License Here...?
+
+Authors:
+Jonathan Mortensen
+Bastien Rance
+
+For installation instructions, see the INSTALL file
+
+PM provides a quick way to manage various projects (directories) which can have scripted actions based on user preference.
+Main features include:
+Saves the last working subdirectory when you leave a project, automatically returning you to that directory when returning to a project.
+Provides an EASY commit function, which adds the last command along with an optional message to a log file for that project. (Because we are all lazy)
+Provides named project switching (you do not need to remember the top level directory)
+Extensible
+
+There are 4 points of navigating through a project under PM which can be scripted with additional actions:
+1) Actions upon entry of a project. This can occur either through switching to a project using pm (pm p "proj name") or by simplying changing directory into the project or its subdirectories (cd)
+2) Upon exit of a project.  Same as above.  By default, the last known working directory of the project is saved.  When changing to a project using pm, the terminal will automatically return to that working directory
+3) Upon commit.  PM has a commit action.  Using the commit action adds the last command, along with the date and time to a log file (the beginning of a shell script to automate anything in your project).  This commit can be accompanied by a message.
+4) At every command (Do this by changing BASH variables upon entry, OPTION 1)
+
+Each option can be configured for a specific project, or for all projects, using the config files within the top level directory of a project (.pm) or in the .pm folder in your home directory.
+
+At a top level directory, the config files are .pm, .pm_exit, .pm_update
+In the main .pm directory (in your home directory) the config files are pm.conf, pm_upate.conf, pm_exit.conf
+Additional configuration can be done in ~/.ondirrc
+
+
+For specific usage instructions use the help function of PM
+
+Future plans: Integrate GIT, make the delete function work
+
+Known bugs:
+* File names containing space are not recognized

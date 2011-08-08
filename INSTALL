@@ -1,0 +1,35 @@
+1) First, if not already installed, install ondir following the instructions at http://swapoff.org/ondir.html 
+Be sure to have have an .ondirrc installed in your home directory and add the functions for the application to you .bashrc
+
+2) Additionally, place the following in your .bashrc: 
+#Note the second part combines all of your history and saves it.
+
+export PM_DIR=~/.pm/
+
+pm(){
+
+        if [ $1 = "p" ]; then
+                cd "$(grep "^$2" ~/.pm/projects | cut -f2)"
+                cd "$last_dir"
+        else
+                bash ~/pm.sh "$@"
+                if [ $1 = "-c" ];then
+                        source .pm
+                fi
+        fi
+}
+
+export HISTCONTROL=ignoredups:erasedups  # no duplicate entries
+export HISTSIZE=100000                   # big big history
+export HISTFILESIZE=100000               # big big history
+shopt -s histappend                      # append to history, don't overwrite it
+
+# Save and reload the history after each command finishes
+export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+
+
+3) Source your bashrc or close and re-open a terminal.
+
+4) Run "pm -i"
+
+5) Use the help function pm -h for usage
