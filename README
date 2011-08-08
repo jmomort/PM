@@ -1,5 +1,3 @@
-License Here...?
-
 Authors:
 Jonathan Mortensen
 Bastien Rance
@@ -31,4 +29,4 @@ For specific usage instructions use the help function of PM
 Future plans: Integrate GIT, make the delete function work
 
 Known bugs:
-* File names containing space are not recognized
+* File names containing space are not recognized during commit

@@ -30,6 +30,8 @@ export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 3) Source your bashrc or close and re-open a terminal.
 
-4) Run "pm -i"
+4) Ensure pm.sh is in your home directory
 
-5) Use the help function pm -h for usage
+5) Run "pm -i"
+
+6) Use the help function pm -h for usage
