@@ -126,17 +126,29 @@ cat >> "$PM_UPDATE" << "THE_END_OF_THE_MESSAGE_4"
     RELATIVE_PATH=${cwd//$CURR_PROJ/""}
     RELATIVE_PATH=${RELATIVE_PATH:1}
     if [ ${#RELATIVE_PATH} -gt 0 ] ; then
-	for elt in $LAST_CMD ; do
-	    if [ -e $elt ] ; then
-		relative_path_cmd=$relative_path_cmd" "$RELATIVE_PATH"/"$elt
-	    else
-		relative_path_cmd=$relative_path_cmd" "$elt
-	    fi
-	done
-	echo $relative_path_cmd >> "$CURR_PROJ"/"$PM_LOG_FILE"
-    else
-	echo $LAST_CMD >> "$CURR_PROJ"/"$PM_LOG_FILE"
-    fi
+      current_string=""
+      for elt in $LAST_CMD ; do
+	  last_char=${elt#${elt%?}}
+            if [ $last_char == "\\" ] ; then
+	      e=`echo $elt | sed 's/.$//'`
+              current_string=$current_string" "$e
+  	    else
+	      o=$current_string" "$elt
+  	      o=`echo $o | sed 's/^ +//'`
+ 	      if [ -e "$o" ] ; then
+                # replace space by backslash space
+		o=`echo $o | sed 's/ /\\\\ /g'`
+		relative_path_cmd=$relative_path_cmd" "$RELATIVE_PATH"/"$o
+	      else
+		relative_path_cmd=$relative_path_cmd" "$o
+	      fi
+	      current_string=""
+	  fi
+      done
+      echo $relative_path_cmd >> "$CURR_PROJ"/"$PM_LOG_FILE"
+  else
+    echo $LAST_CMD >> "$CURR_PROJ"/"$PM_LOG_FILE"
+  fi   
 THE_END_OF_THE_MESSAGE_4
 
 # add save the last dir on exit to the main exit config
@@ -210,7 +222,13 @@ while getopts "m:uc:od:ih" opt; do
 		#remove row in proj_list
 		sed -i '/^'$OPTARG'/d' $PM_LIST
 		#remove rows in ondirrc
-		sed -i '|'$PROJ_REM'|,|enter|d' $ONDIR
+		t=$(mktemp)
+		more $ONDIR | grep -n -w enter | grep -A1 $PROJ_REM > $t
+		line1=`more .t | sed '2d' | cut -d ":" -f1`
+		line2=`more .t | sed '1d' | cut -d ":" -f1`
+		let line2=$line2-1
+		sed '$line1,$line2""d' $ONDIR
+		rm $t
 		#Note envi var will need to be reset
 		echo "Reset your shell to reset any changed environment variables"
     	;;
