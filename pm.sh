@@ -223,9 +223,9 @@ while getopts "m:uc:od:ih" opt; do
 		sed -i '/^'$OPTARG'/d' $PM_LIST
 		#remove rows in ondirrc
 		t=$(mktemp)
-		more $ONDIR | grep -n -w enter | grep -A1 $PROJ_REM > $t
-		line1=`more .t | sed '2d' | cut -d ":" -f1`
-		line2=`more .t | sed '1d' | cut -d ":" -f1`
+		grep -n -w "enter" $ONDIR | grep -A1 $PROJ_REM > $t
+		line1=$(sed '2d' $t | cut -d ":" -f1)
+		line2=$(sed '1d' $t | cut -d ":" -f1)
 		let line2=$line2-1
 		sed '$line1,$line2""d' $ONDIR
 		rm $t
